@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -32,7 +33,13 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request)
     {
-        $post = Post::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('posts', 'public');
+        }
+
+        $post = Post::create($data);
         $post->tags()->sync($request->input('tags', []));
 
         return new PostResource($post);
@@ -45,7 +52,16 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $post->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            if ($post->image_path) {
+                Storage::disk('public')->delete($post->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('posts', 'public');
+        }
+
+        $post->update($data);
         $post->tags()->sync($request->input('tags', []));
 
         return new PostResource($post);

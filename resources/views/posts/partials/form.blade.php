@@ -10,6 +10,14 @@
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2">
 </div>
 <div class="mb-4">
+    <label class="block mb-1" for="image">Image</label>
+    <input id="image" type="file" name="image"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2">
+    @if(isset($post) && $post->image_url)
+        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="mt-2 h-20">
+    @endif
+</div>
+<div class="mb-4">
     <label class="block mb-1" for="content">Content</label>
     <textarea id="content" name="content" rows="5"
         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2">{{ old('content', $post->content ?? '') }}</textarea>
