@@ -18,6 +18,7 @@ class PostFactory extends Factory
             'category_id' => Category::factory(),
             'title' => $this->faker->sentence,
             'slug' => $this->faker->unique()->slug,
+            'image_path' => 'images/'.$this->faker->unique()->uuid.'.jpg',
             'content' => $this->faker->paragraph,
             'status' => 'published',
         ];
