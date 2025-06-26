@@ -13,6 +13,7 @@ class PostResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
+            'image_url' => $this->image_url,
             'status' => $this->status,
             'category' => $this->category?->only(['id', 'name', 'slug']),
             'tags' => $this->tags->map->only(['id', 'name', 'slug']),

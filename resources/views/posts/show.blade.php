@@ -2,6 +2,9 @@
 
 @section('content')
     <article class="bg-white rounded shadow p-6">
+        @if($post->image_url)
+            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="mb-4 w-full h-auto">
+        @endif
         <h1 class="text-3xl font-bold mb-2">{{ $post->title }}</h1>
         <p class="text-sm text-gray-500 mb-4">
             <a href="{{ route('posts.category', $post->category) }}" class="text-blue-600 hover:underline">

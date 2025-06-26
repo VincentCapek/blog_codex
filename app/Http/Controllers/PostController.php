@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
@@ -65,6 +66,10 @@ class PostController extends Controller
         $data = $request->validated();
         $data['user_id'] = auth()->id() ?? User::value('id');
 
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('posts', 'public');
+        }
+
         $post = Post::create($data);
         $post->tags()->sync($request->input('tags', []));
 
@@ -74,7 +79,16 @@ class PostController extends Controller
 
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
-        $post->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            if ($post->image_path) {
+                Storage::disk('public')->delete($post->image_path);
+            }
+            $data['image_path'] = $request->file('image')->store('posts', 'public');
+        }
+
+        $post->update($data);
         $post->tags()->sync($request->input('tags', []));
 
         return redirect()->route('posts.show', $post)

@@ -17,6 +17,7 @@ class StorePostRequest extends FormRequest
             'title' => ['required', 'string'],
             'slug' => ['required', 'string', 'unique:posts,slug'],
             'content' => ['required', 'string'],
+            'image' => ['nullable', 'image'],
             'category_id' => ['required', 'exists:categories,id'],
             'tags' => ['array'],
             'tags.*' => ['exists:tags,id'],
