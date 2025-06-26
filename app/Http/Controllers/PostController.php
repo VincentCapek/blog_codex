@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Tag;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -61,7 +62,10 @@ class PostController extends Controller
 
     public function store(StorePostRequest $request): RedirectResponse
     {
-        $post = Post::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = auth()->id() ?? User::value('id');
+
+        $post = Post::create($data);
         $post->tags()->sync($request->input('tags', []));
 
         return redirect()->route('posts.show', $post);
