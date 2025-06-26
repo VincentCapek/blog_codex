@@ -68,7 +68,8 @@ class PostController extends Controller
         $post = Post::create($data);
         $post->tags()->sync($request->input('tags', []));
 
-        return redirect()->route('posts.show', $post);
+        return redirect()->route('posts.show', $post)
+            ->with('success', 'Post created successfully.');
     }
 
     public function update(UpdatePostRequest $request, Post $post): RedirectResponse
@@ -76,13 +77,15 @@ class PostController extends Controller
         $post->update($request->validated());
         $post->tags()->sync($request->input('tags', []));
 
-        return redirect()->route('posts.show', $post);
+        return redirect()->route('posts.show', $post)
+            ->with('success', 'Post updated successfully.');
     }
 
     public function destroy(Post $post): RedirectResponse
     {
         $post->delete();
 
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.index')
+            ->with('success', 'Post deleted successfully.');
     }
 }

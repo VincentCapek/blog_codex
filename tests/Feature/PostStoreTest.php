@@ -22,5 +22,6 @@ test('author can store post', function () {
     ]);
 
     $response->assertRedirect();
+    $response->assertSessionHas('success');
     $this->assertDatabaseHas('posts', ['slug' => 'my-post']);
 });
