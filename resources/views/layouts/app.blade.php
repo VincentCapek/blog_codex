@@ -19,6 +19,7 @@
         </nav>
     </header>
     <main class="container mx-auto px-4">
+        @include('partials.flash')
         @yield('content')
     </main>
 </body>
