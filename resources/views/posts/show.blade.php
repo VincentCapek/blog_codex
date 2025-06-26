@@ -3,7 +3,11 @@
 @section('content')
     <article class="bg-white rounded shadow p-6">
         <h1 class="text-3xl font-bold mb-2">{{ $post->title }}</h1>
-        <p class="text-sm text-gray-500 mb-4">{{ $post->category->name }} - {{ $post->created_at->format('Y-m-d') }}</p>
+        <p class="text-sm text-gray-500 mb-4">
+            <a href="{{ route('posts.category', $post->category) }}" class="text-blue-600 hover:underline">
+                {{ $post->category->name }}
+            </a> - {{ $post->created_at->format('Y-m-d') }}
+        </p>
         <div class="prose">{{ $post->content }}</div>
         <p class="mt-4 text-sm">Tags:
             @foreach($post->tags as $tag)
