@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -20,7 +24,7 @@ class PostController extends Controller
 
         if ($tag = $request->route('tag') ?: $request->query('tag')) {
             $tagId = is_object($tag) ? $tag->id : $tag;
-            $query->whereHas('tags', fn ($q) => $q->where('id', $tagId));
+            $query->whereHas('tags', fn ($q) => $q->where('tags.slug', $tagId));
         }
 
         if ($search = $request->query('q')) {
@@ -37,7 +41,7 @@ class PostController extends Controller
         return view('posts.show', compact('post'));
     }
 
-    public function store(StorePostRequest $request)
+    public function store(StorePostRequest $request): RedirectResponse
     {
         $post = Post::create($request->validated());
         $post->tags()->sync($request->input('tags', []));
@@ -45,7 +49,7 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post);
     }
 
-    public function update(UpdatePostRequest $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post): RedirectResponse
     {
         $post->update($request->validated());
         $post->tags()->sync($request->input('tags', []));
@@ -53,7 +57,7 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post);
     }
 
-    public function destroy(Post $post)
+    public function destroy(Post $post): RedirectResponse
     {
         $post->delete();
 
