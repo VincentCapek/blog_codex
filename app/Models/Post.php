@@ -16,9 +16,25 @@ class Post extends Model
         'category_id',
         'title',
         'slug',
+        'image_path',
         'content',
         'status',
     ];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image_path) {
+            return null;
+        }
+
+        if (str_starts_with($this->image_path, 'http')) {
+            return $this->image_path;
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->image_path);
+    }
 
     public function category(): BelongsTo
     {
