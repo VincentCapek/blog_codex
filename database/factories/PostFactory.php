@@ -6,7 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 
 class PostFactory extends Factory
 {
@@ -22,7 +22,7 @@ class PostFactory extends Factory
             'category_id' => Category::factory(),
             'title' => $this->faker->sentence,
             'slug' => $this->faker->unique()->slug,
-            'image_path' => $path,
+            'image_path' => 'https://placehold.co/600x400?text=' . Str::slug($this->faker->words(2, true)),
             'content' => $this->faker->paragraph,
             'status' => 'published',
         ];

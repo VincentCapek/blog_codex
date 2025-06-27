@@ -25,7 +25,15 @@ class Post extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image_path ? \Illuminate\Support\Facades\Storage::disk('public')->url($this->image_path) : null;
+        if (! $this->image_path) {
+            return null;
+        }
+
+        if (str_starts_with($this->image_path, 'http')) {
+            return $this->image_path;
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->image_path);
     }
 
     public function category(): BelongsTo
