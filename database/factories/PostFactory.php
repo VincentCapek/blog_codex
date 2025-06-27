@@ -14,6 +14,9 @@ class PostFactory extends Factory
 
     public function definition(): array
     {
+        $image = UploadedFile::fake()->image($this->faker->uuid.'.jpg');
+        $path = $image->store('posts', 'public');
+
         return [
             'user_id' => User::factory(),
             'category_id' => Category::factory(),

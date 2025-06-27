@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, Category $category)
     {
         $query = Post::with(['category', 'tags'])->where('status', 'published');
 
